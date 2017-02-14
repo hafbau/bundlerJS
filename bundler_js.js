@@ -1,15 +1,6 @@
 const fs = require('fs');
 const configFile = 'bundle_config.json';
 
-function writeFiles(files) {
-  files = Array.isArray(files) ? files : [files];
-  let firstTime = true;
-  files.forEach((file, idx, files) => {
-    readFileWriteBundle(file, idx, files, firstTime);
-    firstTime = false;
-  });
-}
-
 function bundle() {
   fs.stat(configFile, (err, stats) => {
     errorHandler(err, 'Please supply a bundle_config.json file in bundlerJS/ directory');
@@ -20,7 +11,11 @@ function bundle() {
       writeFiles(config.files);
     });
   });
-};
+}
+
+function errorHandler(e, msg) {
+  if (e) throw Error(`${msg}\n${e}`);
+}
 
 function readFileWriteBundle(file, idx, files, firstTime) {
   fs.readFile(file, 'utf8', function(err, fileContent){
@@ -34,9 +29,13 @@ function readFileWriteBundle(file, idx, files, firstTime) {
   });
 }
 
-function errorHandler(e, msg) {
-  if (e) throw Error(`${msg}\n${e}`);
+function writeFiles(files) {
+  files = Array.isArray(files) ? files : [files];
+  let firstTime = true;
+  files.forEach((file, idx, files) => {
+    readFileWriteBundle(file, idx, files, firstTime);
+    firstTime = false;
+  });
 }
 
 bundle();
-module.exports = bundle;
