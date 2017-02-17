@@ -19,7 +19,7 @@ A simple JS scripts bundler
 
 
 ## Dependencies
-None
+Node
 
 
 ## License
